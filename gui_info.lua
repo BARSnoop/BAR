@@ -246,7 +246,7 @@ local function refreshUnitInfo()
 			end
 			if weaponDef.damages then 
 				if  unitDef.name == 'armthor' or unitDef.name == 'armcom' or unitDef.name == 'corcom' 
-				or unitDef.name == 'armvang' or unitDef.name == 'armfido' or unitDef.name == 'corkarg' then	
+				or unitDef.name == 'armvang' or unitDef.name == 'corkarg' then	
 					if i == 1 then  									--Calculating using first weapon only
 						local defDmg
 						local dps
@@ -272,6 +272,18 @@ local function refreshUnitInfo()
 						
 					end	
 				
+				
+				elseif unitDef.name == 'armfido' then
+					if i==2 then                                --Calculating using second weapon only
+						local defDmg
+						local dps
+						defDmg = weaponDef.damages[0]      		--Damage to default armor category
+						dps = math_floor(defDmg * weaponDef.salvoSize / weaponDef.reload)
+						unitDefInfo[unitDefID].dps = dps
+						unitDefInfo[unitDefID].range = weaponDef.range
+						unitDefInfo[unitDefID].reloadTime = weaponDef.reload
+				
+					end
 				elseif unitDef.name == 'corkorg' then          --excluding korstomp from dps calcuation for juggernaut 
 					if i==1 then
 						local defDmg
@@ -279,6 +291,7 @@ local function refreshUnitInfo()
 						defDmg = weaponDef.damages[0]      		--Damage to default armor category
 						dps = math_floor(defDmg * weaponDef.salvoSize / weaponDef.reload)
 						unitDefInfo[unitDefID].dps = dps
+						
 					end
 					
 					if i==2 then
@@ -312,6 +325,8 @@ local function refreshUnitInfo()
 						defDmg = weaponDef.damages[0]      		--Damage to default armor category
 						dps = 2*(math_floor(defDmg * weaponDef.salvoSize / weaponDef.reload))
 						unitDefInfo[unitDefID].dps = dps
+						unitDefInfo[unitDefID].range = weaponDef.range
+						unitDefInfo[unitDefID].reloadTime = weaponDef.reload
 					end
 					
 					if i==2 then
@@ -320,8 +335,7 @@ local function refreshUnitInfo()
 						defDmg = weaponDef.damages[0]      		--Damage to default armor category
 						dps2 = 3*(math_floor(defDmg * weaponDef.salvoSize / weaponDef.reload))
 						unitDefInfo[unitDefID].dps2 = dps2 
-						unitDefInfo[unitDefID].range = weaponDef.range
-						unitDefInfo[unitDefID].reloadTime = weaponDef.reload
+						
 					end	
 				
 				else
@@ -337,7 +351,7 @@ local function refreshUnitInfo()
 					
 					local dps = math_floor(defDmg * weaponDef.salvoSize / weaponDef.reload)
 					if dps > unitDefInfo[unitDefID].dps then      --unitDefInfo[unitDefID].dps = dps
-						unitDefInfo[unitDefID].reloadTime = reloadTime	-- only main weapon is relevant
+						unitDefInfo[unitDefID].reloadTime = weaponDef.reload	-- only main weapon is relevant
 						unitDefInfo[unitDefID].mainWeapon = i
 						unitDefInfo[unitDefID].range = weaponDef.range
 					end
